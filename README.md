@@ -45,31 +45,6 @@ Airbnb also maintains a [JavaScript Style Guide][airbnb-javascript].
 * <a name="default-indentation"></a>Use soft-tabs with a
     two-space indent.<sup>[[link](#default-indentation)]</sup>
 
-* <a name="indent-when-as-case"></a>Indent `when` as deep as `case`.
-    <sup>[[link](#indent-when-as-case)]</sup>
-
-    ```ruby
-    case
-    when song.name == 'Misty'
-      puts 'Not again!'
-    when song.duration > 120
-      puts 'Too long!'
-    when Time.now.hour > 21
-      puts "It's too late"
-    else
-      song.play
-    end
-
-    kind = case year
-           when 1850..1889 then 'Blues'
-           when 1890..1909 then 'Ragtime'
-           when 1910..1929 then 'New Orleans Jazz'
-           when 1930..1939 then 'Swing'
-           when 1940..1950 then 'Bebop'
-           else 'Jazz'
-           end
-    ```
-
 * <a name="align-function-params"></a>Align function parameters either all on
     the same line or one per line.<sup>[[link](#align-function-params)]</sup>
 
@@ -1070,17 +1045,6 @@ In either case:
     enabled = true if enabled.nil?
     ```
 
-* <a name="lambda-calls"></a>Use `.call` explicitly when calling lambdas.
-    <sup>[[link](#lambda-calls)]</sup>
-
-    ```ruby
-    # bad
-    lambda.(x, y)
-
-    # good
-    lambda.call(x, y)
-    ```
-
 * <a name="no-cryptic-perl"></a>Avoid using Perl-style special variables (like
     `$0-9`, `$`, etc. ). They are quite cryptic and their use in anything but
     one-liner scripts is discouraged. Prefer long form versions such as
@@ -1520,23 +1484,6 @@ In either case:
     email_with_name = "#{user.name} <#{user.email}>"
     ```
 
-  Furthermore, keep in mind Ruby 1.9-style interpolation. Let's say you are
-  composing cache keys like this:
-
-    ```ruby
-    CACHE_KEY = '_store'
-
-    cache.write(@user.id + CACHE_KEY)
-    ```
-
-    Prefer string interpolation instead of string concatenation:
-
-    ```ruby
-    CACHE_KEY = '%d_store'
-
-    cache.write(CACHE_KEY % @user.id)
-    ```
-
 * <a name="string-concatenation"></a>Avoid using `String#+` when you need to
     construct large data chunks. Instead, use `String#<<`. Concatenation mutates
     the string instance in-place  and is always faster than `String#+`, which
@@ -1567,120 +1514,6 @@ In either case:
     # good
     "Some string is really long and " \
       "spans multiple lines."
-    ```
-
-## Regular Expressions
-
-* <a name="regex-named-groups"></a>Avoid using `$1-9` as it can be hard to track
-    what they contain. Named groups can be used instead.
-    <sup>[[link](#regex-named-groups)]</sup>
-
-    ```ruby
-    # bad
-    /(regexp)/ =~ string
-    ...
-    process $1
-
-    # good
-    /(?<meaningful_var>regexp)/ =~ string
-    ...
-    process meaningful_var
-    ```
-
-* <a name="caret-and-dollar-regexp"></a>Be careful with `^` and `$` as they
-    match start/end of line, not string endings.  If you want to match the whole
-    string use: `\A` and `\z`.<sup>[[link](#caret-and-dollar-regexp)]</sup>
-
-    ```ruby
-    string = "some injection\nusername"
-    string[/^username$/]   # matches
-    string[/\Ausername\z/] # don't match
-    ```
-
-* <a name="comment-regexes"></a>Use `x` modifier for complex regexps. This makes
-    them more readable and you can add some useful comments. Just be careful as
-    spaces are ignored.<sup>[[link](#comment-regexes)]</sup>
-
-    ```ruby
-    regexp = %r{
-      start         # some text
-      \s            # white space char
-      (group)       # first group
-      (?:alt1|alt2) # some alternation
-      end
-    }x
-    ```
-
-## Percent Literals
-
-* <a name="percent-literal-delimiters"></a>Prefer parentheses over curly
-    braces, brackets, or pipes when using `%`-literal delimiters for
-    consistency, and because the behavior of `%`-literals is closer to method
-    calls than the alternatives.<sup>[[link](#percent-literal-delimiters)]</sup>
-
-    ```ruby
-    # bad
-    %w[date locale]
-    %w{date locale}
-    %w|date locale|
-
-    # good
-    %w(date locale)
-    ```
-
-* <a name="percent-w"></a>Use `%w` freely.<sup>[[link](#percent-w)]</sup>
-
-    ```ruby
-    STATES = %w(draft open closed)
-    ```
-
-* <a name="percent-parens"></a>Use `%()` for single-line strings which require
-    both interpolation and embedded double-quotes. For multi-line strings,
-    prefer heredocs.<sup>[[link](#percent-parens)]</sup>
-
-    ```ruby
-    # bad - no interpolation needed
-    %(<div class="text">Some text</div>)
-    # should be '<div class="text">Some text</div>'
-
-    # bad - no double-quotes
-    %(This is #{quality} style)
-    # should be "This is #{quality} style"
-
-    # bad - multiple lines
-    %(<div>\n<span class="big">#{exclamation}</span>\n</div>)
-    # should be a heredoc.
-
-    # good - requires interpolation, has quotes, single line
-    %(<tr><td class="name">#{name}</td>)
-    ```
-
-* <a name="percent-r"></a>Use `%r` only for regular expressions matching *more
-    than* one '/' character.<sup>[[link](#percent-r)]</sup>
-
-    ```ruby
-    # bad
-    %r(\s+)
-
-    # still bad
-    %r(^/(.*)$)
-    # should be /^\/(.*)$/
-
-    # good
-    %r(^/blog/2011/(.*)$)
-    ```
-
-* <a name="percent-x"></a>Avoid the use of %x unless you're going to invoke a
-    command with backquotes in it (which is rather unlikely).
-    <sup>[[link](#percent-x)]</sup>
-
-    ```ruby
-    # bad
-    date = %x(date)
-
-    # good
-    date = `date`
-    echo = %x(echo `date`)
     ```
 
 ## Rails
