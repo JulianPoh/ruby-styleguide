@@ -12,6 +12,11 @@ If you want to have your ruby autmatically checked against this styleguide, inst
 gem install rubocop
 ```
 
+Run it inside a directory that contains ruby:
+```
+rubocop
+```
+
 ## Table of Contents
   1. [Whitespace](#whitespace)
     1. [Indentation](#indentation)
