@@ -42,7 +42,6 @@ rubocop
   1. [Exceptions](#exceptions)
   1. [Collections](#collections)
   1. [Strings](#strings)
-  1. [Regular Expressions](#regular-expressions)
   1. [Percent Literals](#percent-literals)
   1. [Rails](#rails)
     1. [Scopes](#scopes)
